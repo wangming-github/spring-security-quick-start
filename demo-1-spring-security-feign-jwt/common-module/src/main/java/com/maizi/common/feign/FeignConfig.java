@@ -9,21 +9,30 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * Feign 客户端配置类
+ * <p>
+ * 该类用于配置 Feign 客户端的各种参数，包括错误解码器、请求选项、日志级别和请求拦截器。
+ * 通过 @Configuration 注解，Spring 将其作为配置类进行管理。
+ *
  * @author maizi
- */ /*
- * Feign拦截器
  */
 @Slf4j
 @Configuration
 public class FeignConfig {
 
+    /**
+     * 提供自定义的 Feign 错误解码器 Bean
+     *
+     * @return ErrorDecoder 实现类 FeignErrorDecoder 的实例
+     */
     @Bean
     public ErrorDecoder errorDecoder() {
+        // 返回自定义的 Feign 错误解码器，用于处理 Feign 请求中的错误
         return new FeignErrorDecoder();
     }
 
     /**
-     * 定义一个 Request.Options Bean，用于配置连接和读取超时时间。
+     * 定义 Request.Options Bean，用于配置连接和读取超时时间
      *
      * @return Request.Options 配置对象
      */
@@ -44,27 +53,34 @@ public class FeignConfig {
         return new Request.Options(connectTimeoutMillis, readTimeoutMillis);
     }
 
+    /**
+     * 配置 Feign 的日志级别
+     *
+     * @return Logger.Level 配置对象
+     */
     @Bean
     Logger.Level feignLoggerLevel() {
-
         /*
          * NONE: 不记录任何日志（默认）。
          * BASIC: 仅记录请求方法和 URL，响应状态码及执行时间。
          * HEADERS: 记录 BASIC 级别的基础信息，并且记录请求和响应的头信息。
          * FULL: 记录 HEADERS 级别的信息，并且记录请求和响应的正文（body）以及元数据。
          */
-        return Logger.Level.BASIC; // 设置 Feign 的日志级别为 FULL
+        // 设置 Feign 的日志级别为 BASIC，仅记录基本的请求和响应信息
+        return Logger.Level.BASIC;
     }
 
     /**
-     * 用于在Feign请求发送之前修改请求模板（例如添加HTTP头）。
+     * 提供自定义的请求拦截器 Bean
      * <p>
-     * 这个拦截器非常简单，
-     * 它静态地将一个固定的头部（test-Key）和固定的值（test-Value） 添加到每个Feign请求中。
+     * 用于在 Feign 请求发送之前修改请求模板（例如添加 HTTP 头部）。
+     * 这个拦截器将一个固定的头部（test-Key）和固定的值（test-Value）添加到每个 Feign 请求中。
+     *
+     * @return RequestInterceptor 实现类的实例
      */
     @Bean
     public RequestInterceptor requestInterceptor() {
+        // 返回一个新的请求拦截器，添加固定的 HTTP 头部到每个请求中
         return template -> template.header("test-Key", "test-Value");
     }
-
 }

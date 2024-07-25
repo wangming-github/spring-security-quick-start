@@ -17,60 +17,60 @@
 │  │  │  │  │  maizi/
 │  │  │  │  │  ├─
 │  │  │  │  │  │  author/
-│  │  │  │  │  │  ├─AuthorApplication.java
+│  │  │  │  │  │  ├─AuthorApplication.java        该类配置了 Spring Boot 应用程序，并启用了 Feign 客户端、服务发现和组件扫描。
 │  │  │  │  │  │  ├─
 │  │  │  │  │  │  │  config/
-│  │  │  │  │  │  │  ├─LoginUserDetailsService.java
+│  │  │  │  │  │  │  ├─LoginUserDetailsService.java        自定义用户详细信息服务类，用于登录时从数据库或其他来源加载用户信息以供 Spring Security 进行身份验证和授权。
 │  │  │  │  │  │  ├─
 │  │  │  │  │  │  │  controller/
-│  │  │  │  │  │  │  ├─LoginController.java
-│  │  │  │  │  │  │  ├─TestAuthorizeController.java
-│  │  │  │  │  │  │  ├─TestFeignServiceController.java
-│  │  │  │  │  │  │  ├─TestLocalServiceController.java
+│  │  │  │  │  │  │  ├─LoginController.java        该控制器处理用户的登录和登出请求。
+│  │  │  │  │  │  │  ├─TestAuthorizeController.java        使用 Spring Security 的注解来控制访问权限。
+│  │  │  │  │  │  │  ├─TestFeignServiceController.java         这个控制器类用于处理与 Feign 服务相关的 HTTP 请求，并将请求转发到相应的 Feign 客户端接口。
+│  │  │  │  │  │  │  ├─TestLocalServiceController.java        本地服务测试控制器
 │  │  │  │  │  │  │  ├─
 │  │  │  │  │  │  │  │  other/
-│  │  │  │  │  │  │  │  ├─PermissionsController.java
-│  │  │  │  │  │  │  │  ├─RolePermissionsController.java
-│  │  │  │  │  │  │  │  ├─RolesController.java
-│  │  │  │  │  │  │  │  ├─UserRolesController.java
-│  │  │  │  │  │  │  │  ├─UsersController.java
+│  │  │  │  │  │  │  │  ├─PermissionsController.java       
+│  │  │  │  │  │  │  │  ├─RolePermissionsController.java       
+│  │  │  │  │  │  │  │  ├─RolesController.java       
+│  │  │  │  │  │  │  │  ├─UserRolesController.java       
+│  │  │  │  │  │  │  │  ├─UsersController.java       
 │  │  │  │  │  │  ├─
 │  │  │  │  │  │  │  dao/
-│  │  │  │  │  │  │  ├─PermissionsDao.java
-│  │  │  │  │  │  │  ├─RolePermissionsDao.java
-│  │  │  │  │  │  │  ├─RolesDao.java
-│  │  │  │  │  │  │  ├─UserRolesDao.java
-│  │  │  │  │  │  │  ├─UsersDao.java
+│  │  │  │  │  │  │  ├─PermissionsDao.java       
+│  │  │  │  │  │  │  ├─RolePermissionsDao.java       
+│  │  │  │  │  │  │  ├─RolesDao.java       
+│  │  │  │  │  │  │  ├─UserRolesDao.java       
+│  │  │  │  │  │  │  ├─UsersDao.java       
 │  │  │  │  │  │  ├─
 │  │  │  │  │  │  │  entity/
-│  │  │  │  │  │  │  ├─PermissionsEntity.java
-│  │  │  │  │  │  │  ├─RolePermissionsEntity.java
-│  │  │  │  │  │  │  ├─RolesEntity.java
-│  │  │  │  │  │  │  ├─UserRolesEntity.java
-│  │  │  │  │  │  │  ├─UserWithRolesAndPermissions.java
-│  │  │  │  │  │  │  ├─UsersEntity.java
+│  │  │  │  │  │  │  ├─PermissionsEntity.java       
+│  │  │  │  │  │  │  ├─RolePermissionsEntity.java       
+│  │  │  │  │  │  │  ├─RolesEntity.java       
+│  │  │  │  │  │  │  ├─UserRolesEntity.java       
+│  │  │  │  │  │  │  ├─UserWithRolesAndPermissions.java       
+│  │  │  │  │  │  │  ├─UsersEntity.java       
 │  │  │  │  │  │  ├─
 │  │  │  │  │  │  │  feign/
-│  │  │  │  │  │  │  ├─FeignService.java
+│  │  │  │  │  │  │  ├─FeignService.java        Feign 客户端接口，用于与服务模块进行通信。
 │  │  │  │  │  │  ├─
 │  │  │  │  │  │  │  service/
-│  │  │  │  │  │  │  ├─LoginService.java
-│  │  │  │  │  │  │  ├─PermissionsService.java
-│  │  │  │  │  │  │  ├─RolePermissionsService.java
-│  │  │  │  │  │  │  ├─RolesService.java
-│  │  │  │  │  │  │  ├─UserRolesService.java
-│  │  │  │  │  │  │  ├─UsersService.java
+│  │  │  │  │  │  │  ├─LoginService.java        登录服务接口
+│  │  │  │  │  │  │  ├─PermissionsService.java       
+│  │  │  │  │  │  │  ├─RolePermissionsService.java       
+│  │  │  │  │  │  │  ├─RolesService.java       
+│  │  │  │  │  │  │  ├─UserRolesService.java       
+│  │  │  │  │  │  │  ├─UsersService.java       
 │  │  │  │  │  │  │  ├─
 │  │  │  │  │  │  │  │  impl/
-│  │  │  │  │  │  │  │  ├─LoginServiceImpl.java
-│  │  │  │  │  │  │  │  ├─PermissionsServiceImpl.java
-│  │  │  │  │  │  │  │  ├─RolePermissionsServiceImpl.java
-│  │  │  │  │  │  │  │  ├─RolesServiceImpl.java
-│  │  │  │  │  │  │  │  ├─UserRolesServiceImpl.java
-│  │  │  │  │  │  │  │  ├─UsersServiceImpl.java
+│  │  │  │  │  │  │  │  ├─LoginServiceImpl.java        登录服务实现类 处理用户登录、登出操作，并提供获取用户角色和权限的方法。
+│  │  │  │  │  │  │  │  ├─PermissionsServiceImpl.java       
+│  │  │  │  │  │  │  │  ├─RolePermissionsServiceImpl.java       
+│  │  │  │  │  │  │  │  ├─RolesServiceImpl.java       
+│  │  │  │  │  │  │  │  ├─UserRolesServiceImpl.java       
+│  │  │  │  │  │  │  │  ├─UsersServiceImpl.java       
 │  │  ├─
 │  │  │  resources/
-│  │  │  ├─application.yml
+│  │  │  ├─application.yml 这是 Spring Boot 项目的配置文件 application.yml，包含了数据库连接、Redis 配置、MyBatis-Plus 配置、日志级别等设置。
 │  │  │  ├─
 │  │  │  │  mapper/
 │  │  │  │  ├─
@@ -82,69 +82,5 @@
 │  │  │  │  │  ├─UsersDao.xml
 │  ├─
 
-======================================
-项目目录结构：
-./
-├─HELP.md
-├─pom.xml
-├─
-│  src/
-│  ├─
-│  │  main/
-│  │  ├─
-│  │  │  java/
-│  │  │  ├─TODO.md
-│  │  │  ├─
-│  │  │  │  com/
-│  │  │  │  ├─
-│  │  │  │  │  maizi/
-│  │  │  │  │  ├─AuthorizationModuleApplication.java 应用程序的入口类，配置Mybatisplus的dao包扫描路径
-│  │  │  │  │  ├─
-│  │  │  │  │  │  author
-│  │  │  │  │  │  ├─
-│  │  │  │  │  │  │  config/
-│  │  │  │  │  │  │  ├─JwtAuthenticationTokenFilter.java 定义Jwt过滤器，当携带token的用户第二次登陆时进行校验
-│  │  │  │  │  │  │  ├─SecurityConfig.java springboot security的配置类
-│  │  │  │  │  │  ├─
-│  │  │  │  │  │  │  controller/
-│  │  │  │  │  │  │  ├─AuthController.java 登录、登出接口
-│  │  │  │  │  │  │  ├─TestController.java 模拟用户登录成功后的携带token的二次请求
-│  │  │  │  │  │  │  ├─
-│  │  │  │  │  │  │  │  授权/
-│  │  │  │  │  │  │  │  ├─ApiController.java 定义不同角色访问不同端点的权限控制逻辑
-│  │  │  │  │  │  ├─
-│  │  │  │  │  │  │  exception/
-│  │  │  │  │  │  │  ├─MyAccessDeniedHandler.java 处理访问被拒绝的情况
-│  │  │  │  │  │  │  ├─MyAuthenticationEntryPoint.java 处理未经身份验证用户访问受保护资源的情况
-│  │  │  │  │  │  ├─
-│  │  │  │  │  │  │  module/
-│  │  │  │  │  │  │  ├─CustomUserUserDetails.java 用于封装从数据库查询出的用户信息及其角色和权限。
-│  │  │  │  │  │  │  ├─UserOfRequest.java 接收用户请求对象
-│  │  │  │  │  │  ├─
-│  │  │  │  │  │  │  service/
-│  │  │  │  │  │  │  ├─AuthorizeTestService.java 接口
-│  │  │  │  │  │  │  ├─LoginService.java 接口
-│  │  │  │  │  │  │  ├─
-│  │  │  │  │  │  │  │  impl/
-│  │  │  │  │  │  │  │  ├─CustomUserDetailsService.java 用于根据用户名从数据库中查询用户的详细信息，包括用户信息、角色和权限，并将这些信息封装成一个实现了 UserDetails 接口的对象，供 Spring Security 进行后续的用户认证和授权操作。
-│  │  │  │  │  │  │  │  ├─LoginServiceImpl.java 用户认证，并将认证信息存储到reids。提供注销功能，从 SecurityContextHolder 中获取当前登录用户信息，并从 Redis 中移除该用户信息。
-│  │  │  │  │  │  ├─
-│  │  │  │  │  │  │  utils/
-│  │  │  │  │  │  │  ├─JwtUtil.java Jwt工具类
-│  │  │  │  │  │  │  ├─RedisServiceUtil.java 模拟Redis的工具
-│  │  │  │  │  ├─
-│  │  │  │  │  │  serve/ 提供用户、角色、权限的增删改查
-│  │  test/
-│  │  ├─
-│  │  │  java/
-│  │  │  ├─
-│  │  │  │  com/
-│  │  │  │  ├─
-│  │  │  │  │  maizi/
-│  │  │  │  │  ├─
-│  │  │  │  │  │  authorizationmodule/
-│  │  │  │  │  │  ├─AuthorizationModuleApplicationTests.java 
-│  │  │  │  │  │  ├─PasswordInit.java 对明文密码进行加密，然后更新到原数据上。
-│  │  │  │  │  │  ├─AllMatchExample.java 检查List中是否包含NULL元素
 
 ```

@@ -1,34 +1,37 @@
 server:
-  port: 8080
+  port: 8080 # 设置服务器端口为 8080
+
 spring:
   application:
-    name: auth
+    name: auth # 应用程序名称为 "auth"
+
   datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/aopquickstart?useSSL=FALSE&characterEncoding=UTF-8&serverTimezone=GMT%2B8
-    username: root
-    password: admin123
-    cloud: #nacos
+    type: com.zaxxer.hikari.HikariDataSource # 使用 HikariCP 数据源
+    driver-class-name: com.mysql.cj.jdbc.Driver # 数据库驱动
+    url: jdbc:mysql://127.0.0.1:3306/aopquickstart?useSSL=FALSE&characterEncoding=UTF-8&serverTimezone=GMT%2B8 # 数据库连接 URL
+    username: root # 数据库用户名
+    password: admin123 # 数据库密码
+    cloud: # 配置 Nacos 相关设置
       nacos:
         discovery:
-          server-addr: 127.0.0.1:8848
+          server-addr: 127.0.0.1:8848 # Nacos 服务器地址
+
   redis:
-    host: localhost
-    port: 6379
+    host: localhost # Redis 主机地址
+    port: 6379 # Redis 端口号
 
 # MyBatis-Plus 配置
 mybatis-plus:
-  mapper-locations: classpath*:mapper/**/*.xml
+  mapper-locations: classpath*:mapper/**/*.xml # 指定 MyBatis 的 Mapper XML 文件的位置
   global-config:
     db-config:
-      id-type: auto #统一配置@TableId主键自增
-      #logic-delete-field: flag # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
-      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
-      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+      id-type: auto # 主键自增策略
+      # logic-delete-field: flag # 全局逻辑删除字段名称（从 3.3.0 版本开始，可以忽略步骤2）
+      logic-delete-value: 1 # 逻辑删除值（默认 1）
+      logic-not-delete-value: 0 # 逻辑未删除值（默认 0）
 
 logging:
   level:
-    com.maizi.author.feign: DEBUG #打印出 OpenFeign 的详细请求信息
+    com.maizi.author.feign: DEBUG # 设置 OpenFeign 的日志级别为 DEBUG，打印详细请求信息
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5.5level %-40.40logger [%-4line] → %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5.5level %-40.40logger [%-4line] → %msg%n" # 日志输出格式

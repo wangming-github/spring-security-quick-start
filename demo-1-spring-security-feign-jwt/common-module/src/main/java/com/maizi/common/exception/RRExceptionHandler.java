@@ -1,6 +1,5 @@
 package com.maizi.common.exception;
 
-import com.maizi.common.o.constants.ModuleType;
 import com.maizi.common.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

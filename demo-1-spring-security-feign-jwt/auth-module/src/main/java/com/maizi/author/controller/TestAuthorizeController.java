@@ -10,6 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 权限测试控制器
+ * <p>
+ * 该控制器包含不同的端点用于测试不同角色的访问权限。
+ * 使用 Spring Security 的注解来控制访问权限。
+ *
+ * @author maizi
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api")
@@ -19,9 +27,9 @@ public class TestAuthorizeController {
     LoginService authorService;
 
     /**
-     * 管理员端点，仅允许具有 ROLE_ADMIN 权限的用户访问
+     * 管理员端点，仅允许具有 ROLE_ADMIN 权限的用户访问。
      *
-     * @return 管理员端点的响应
+     * @return 包含成功消息和角色信息的响应
      */
     @GetMapping("/admin")
     @Secured("ROLE_ADMIN")
@@ -31,9 +39,9 @@ public class TestAuthorizeController {
     }
 
     /**
-     * 用户端点，仅允许具有 ROLE_USER 权限的用户访问
+     * 用户端点，仅允许具有 ROLE_USER 权限的用户访问。
      *
-     * @return 用户端点的响应
+     * @return 包含成功消息和角色信息的响应
      */
     @GetMapping("/user")
     @Secured("ROLE_USER")
@@ -43,9 +51,9 @@ public class TestAuthorizeController {
     }
 
     /**
-     * 模拟管理员权限的端点，仅允许具有 ROLE_MODERATOR 权限的用户访问
+     * 模拟管理员权限的端点，仅允许具有 ROLE_MODERATOR 权限的用户访问。
      *
-     * @return 管理员权限端点的响应
+     * @return 包含成功消息和角色信息的响应
      */
     @GetMapping("/moderator")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
@@ -55,9 +63,9 @@ public class TestAuthorizeController {
     }
 
     /**
-     * 来宾端点，允许所有已认证和匿名用户访问
+     * 来宾端点，允许所有已认证和匿名用户访问。
      *
-     * @return 来宾端点的响应
+     * @return 包含成功消息和角色信息的响应
      */
     @GetMapping("/guest")
     @Secured("IS_AUTHENTICATED_ANONYMOUSLY")

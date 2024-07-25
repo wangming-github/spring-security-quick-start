@@ -2,7 +2,6 @@ package com.maizi.common.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.maizi.common.o.constants.ModuleType;
 import com.maizi.common.o.dto.UserDetailsDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
