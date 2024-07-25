@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.maizi</groupId> <!-- 项目的 groupId，通常表示组织或公司名称，类似于 Java 包名 -->
+    <artifactId>spring-security-quick-start</artifactId> <!-- 项目的 artifactId，表示项目的名称 -->
+    <version>1.0-SNAPSHOT</version> <!-- 项目的版本号，1.0-SNAPSHOT 表示这是一个开发中的版本 -->
+    <packaging>pom</packaging> <!-- 项目的打包类型，这里指定为 POM，表示这是一个父 POM 文件 -->
+
+
+    <name>spring-security-quick-start</name>
+
+    <modules>
+        <module>demo-1-spring-security-feign-jwt</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- 在这里定义所有子项目所需的依赖版本 -->
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <!-- 在这里定义所有子项目所需的插件版本 -->
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
+
+

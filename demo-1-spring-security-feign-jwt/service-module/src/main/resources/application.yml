@@ -1,0 +1,22 @@
+server:
+  port: 8082
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/aopquickstart?useSSL=FALSE&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: root
+    password: admin123
+    cloud: #nacos
+      nacos:
+        discovery:
+          server-addr: 127.0.0.1:8848
+  application:
+    name: service-module
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5.5level %-40.40logger [%-4line] → %msg%n"
