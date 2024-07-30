@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -99,8 +99,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/multiply/**").hasAnyAuthority("UPDATE_PRIVILEGES") // 对应的权限配置：只有拥有 UPDATE_PRIVILEGES 权限的用户才能访问 /admin/multiply
                 .anyRequest().authenticated(); // 其他所有请求必须经过认证
 
-        http.logout().disable(); // 禁用默认注销接口，避免 Spring Security 修改 /logout 行为
-        http.formLogin().disable();// 禁用 Spring Security 默认的表单登录功能。
+        http.logout(AbstractHttpConfigurer::disable); // 禁用默认注销接口，避免 Spring Security 修改 /logout 行为
+        http.formLogin(AbstractHttpConfigurer::disable);// 禁用 Spring Security 默认的表单登录功能。
         // 将自定义 JWT 认证过滤器添加到 UsernamePasswordAuthenticationFilter 之前
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
