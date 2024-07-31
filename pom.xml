@@ -1,6 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <name>顶级父项目</name><!--不影响构建-->
 
 
     <parent>
@@ -11,10 +12,16 @@
 
     <groupId>com.maizi</groupId> <!-- 项目的 groupId，通常表示组织或公司名称，类似于 Java 包名 -->
     <artifactId>spring-security-quick-start</artifactId> <!-- 项目的 artifactId，表示项目的名称 -->
-    <version>1.0-SNAPSHOT</version> <!-- 项目的版本号，1.0-SNAPSHOT 表示这是一个开发中的版本 -->
+    <version>1.0-SNAPSHOT</version> <!-- 如果不在子项目中定义版本号，它将默认使用父项目的版本号。 -->
     <packaging>pom</packaging> <!-- 项目的打包类型，这里指定为 POM，表示这是一个父 POM 文件 -->
 
-    <name>spring-security-quick-start</name>
+
+    <properties>
+        <java.version>1.8</java.version> <!-- 当前使用的 Java 版本 -->
+        <java.version.11>11</java.version.11> <!-- 支持 Java 11 版本 -->
+        <java.version.17>17</java.version.17> <!-- 支持 Java 17 版本 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- 指定源文件的字符编码，这里设置为 UTF-8 -->
+    </properties>
 
 
     <modules>
@@ -23,7 +30,7 @@
         <module>demo-2-spring-security-oauth2</module>
         <module>demo-springboot-filter</module>
         <!-- 依赖 spring-boot-starter-parent2.6.13     -->
-        <module>demo-3-spring-authorization-server</module>
+        <!--        <module>demo-3-spring-authorization-server</module>-->
     </modules>
 
     <dependencyManagement>
@@ -33,12 +40,31 @@
     </dependencyManagement>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <!-- 在这里定义所有子项目所需的插件版本 -->
-            </plugins>
-        </pluginManagement>
+        <plugins>
+            <!-- 如果不在子项目中定义，它将默认使用父项目的java 版本。 -->
+            <plugin>
+                <!-- Maven Compiler Plugin 用于编译项目的 Java 源代码 -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <!-- 插件的 artifactId -->
+                <artifactId>maven-compiler-plugin</artifactId>
+                <!-- 插件的版本号，这里使用 3.8.1 -->
+                <version>3.8.1</version>
+                <!-- 插件的配置 -->
+                <configuration>
+                    <!-- 指定 Java 源代码的版本，这里设置为 1.8 表示使用 Java 8 -->
+                    <source>${java.version}</source>
+                    <!-- 指定生成的字节码版本，这里设置为 1.8 表示生成 Java 8 兼容的字节码 -->
+                    <target>${java.version}</target>
+                    <!-- 指定目标 Java 版本 -->
+                    <!-- release 选项与 source 和 target 选项不能同时使用。 release 已经包含了编译源和目标版本的信息，因此不需要再单独设置 source 和 target。你应该选择使用  release 或者 source 和 target，但不是同时使用。-->
+                    <!-- <release>1.8</release>-->
+                    <!-- 指定源文件的字符编码，这里设置为 UTF-8 -->
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
+
 </project>
 
 

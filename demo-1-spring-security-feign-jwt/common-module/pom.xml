@@ -9,7 +9,6 @@
     </parent>
 
     <artifactId>common-module</artifactId>
-    <version>1.0-SNAPSHOT</version>
 
     <dependencies>
         <dependency>

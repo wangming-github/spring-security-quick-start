@@ -2,6 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <name>模块三：新款authorization-server</name>
+
     <parent>
         <groupId>com.maizi</groupId>
         <artifactId>spring-security-quick-start</artifactId>
@@ -16,16 +18,6 @@
     <!--    </parent>-->
 
     <artifactId>demo-3-spring-authorization-server</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>demo-3-spring-authorization-server</name>
-    <description>demo-3-spring-authorization-server</description>
-
-
-    <properties>
-        <!-- 指定 Java 编译版本为 17 -->
-        <java.version>17</java.version>
-    </properties>
-
 
     <dependencies>
         <dependency>
@@ -82,10 +74,12 @@
                 <version>3.8.1</version>
                 <!-- 该插件用于编译 Java 源代码 -->
                 <configuration>
-                    <source>17</source>
                     <!-- 指定编译源代码的版本为 Java 17 -->
-                    <target>17</target>
+                    <source>${java.version.17}</source>
                     <!-- 指定编译后的字节码的版本为 Java 17 -->
+                    <target>${java.version.17}</target>
+                    <!-- 指定目标 Java 版本 元素用于指定编译器的 -release 选项，它有助于确保编译的字节码与目标 JDK 版本兼容。 -->
+                    <!--<release>${java.version.17}</release>-->
                 </configuration>
             </plugin>
         </plugins>

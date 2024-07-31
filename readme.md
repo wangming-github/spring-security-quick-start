@@ -33,7 +33,7 @@
 
 Spring Security 对 Servlet 的支持是基于Servlet过滤器的，所以先看一下过滤器的一般作用是很有帮助的。下图显示了单个HTTP请求的处理程序的典型分层。
 
-![filterchain](/Users/maizi/Documents/0.Quick-Start/spring-security-quick-start/file/imgs/filterchain.png)
+![filterchain](file/imgs/filterchain.png)
 
 
 
@@ -41,13 +41,13 @@ Spring Security 对 Servlet 的支持是基于Servlet过滤器的，所以先看
 
 下面是 `DelegatingFilterProxy` 如何融入 [`Filter` 实例和 `FilterChain` 的](https://springdoc.cn/spring-security/servlet/architecture.html#servlet-filters-review)图片。
 
-![delegatingfilterproxy](/Users/maizi/Documents/0.Quick-Start/spring-security-quick-start/file/imgs/delegatingfilterproxy.png)
+![delegatingfilterproxy](file/imgs/delegatingfilterproxy.png)
 
 ## FilterChainProxy
 
 下图显示了 `FilterChainProxy` 的作用。
 
-![filterchainproxy](/Users/maizi/Documents/0.Quick-Start/spring-security-quick-start/file/imgs/filterchainproxy.png)
+![filterchainproxy](file/imgs/filterchainproxy.png)
 
 
 
@@ -55,7 +55,7 @@ Spring Security 对 Servlet 的支持是基于Servlet过滤器的，所以先看
 
 
 
-![securityfilterchain](/Users/maizi/Documents/0.Quick-Start/spring-security-quick-start/file/imgs/securityfilterchain.png)
+![securityfilterchain](file/imgs/securityfilterchain.png)
 
 `SecurityFilterChain` 中的 [Security Filter](https://springdoc.cn/spring-security/servlet/architecture.html#servlet-security-filters) 通常是Bean，但它们是用 `FilterChainProxy` 而不是 [DelegatingFilterProxy](https://springdoc.cn/spring-security/servlet/architecture.html#servlet-delegatingfilterproxy) 注册的。与直接向Servlet容器或 [DelegatingFilterProxy](https://springdoc.cn/spring-security/servlet/architecture.html#servlet-delegatingfilterproxy) 注册相比，`FilterChainProxy` 有很多优势。首先，它为 [ Spring](https://springdoc.cn/spring-security/servlet/architecture.html#) Security 的所有 Servlet 支持提供了一个起点。由于这个原因，如果你试图对 Spring Security 的 Servlet 支持进行故障诊断，在 `FilterChainProxy` 中添加一个调试点是一个很好的开始。
 
@@ -65,7 +65,7 @@ Spring Security 对 Servlet 的支持是基于Servlet过滤器的，所以先看
 
 下图显示了多个 `SecurityFilterChain` 实例。
 
-![multi securityfilterchain](/Users/maizi/Documents/0.Quick-Start/spring-security-quick-start/file/imgs/multi-securityfilterchain.png)
+![multi securityfilterchain](file/imgs/multi-securityfilterchain.png)
 
 在 [Multiple SecurityFilterChain](https://springdoc.cn/spring-security/servlet/architecture.html#servlet-multi-securityfilterchain-figure) 图中， `FilterChainProxy` 决定应该使用哪个 `SecurityFilterChain`。只有第一个匹配的 `SecurityFilterChain` 被调用。如果请求的URL是 `/api/messages/`，它首先与 `/api/**` 的 `SecurityFilterChain0` 模式匹配，所以只有 `SecurityFilterChain0` 被调用，尽管它也与 `SecurityFilterChainn` 匹配。如果请求的URL是 `/messages/`，它与 `/api/**` 的 `SecurityFilterChain0` 模式不匹配，所以 `FilterChainProxy` 继续尝试每个 `SecurityFilterChain`。假设没有其他 `SecurityFilterChain` 实例相匹配，则调用 `SecurityFilterChainn`。
 
@@ -98,7 +98,7 @@ Spring Security 对 Servlet 的支持是基于Servlet过滤器的，所以先看
 
 接下来，`AbstractAuthenticationProcessingFilter` 可以对提交给它的任何认证请求进行认证。
 
-![abstractauthenticationprocessingfilter](/Users/maizi/Documents/0.Quick-Start/spring-security-quick-start/file/imgs/abstractauthenticationprocessingfilter.png)
+![abstractauthenticationprocessingfilter](file/imgs/abstractauthenticationprocessingfilter.png)
 
 ![number 1](https://springdoc.cn/spring-security/_images/icons/number_1.png) 当用户提交他们的凭证时，`AbstractAuthenticationProcessingFilter` 会从 `HttpServletRequest` 中创建一个要认证的[`Authentication`](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#servlet-authentication-authentication)。创建的认证的类型取决于 `AbstractAuthenticationProcessingFilter` 的子类。例如，[`UsernamePasswordAuthenticationFilter`](https://springdoc.cn/spring-security/servlet/authentication/passwords/form.html#servlet-authentication-usernamepasswordauthenticationfilter)从 `HttpServletRequest` 中提交的 *username* 和 *password* 创建一个 `UsernamePasswordAuthenticationToken`。
 
