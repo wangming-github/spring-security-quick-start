@@ -18,10 +18,12 @@
 
 
     <modules>
-        <!--        <module>demo-1-spring-security-feign-jwt</module>--> <!--  需要 spring-boot-starter-parent2.6.13      -->
-        <!--        <module>demo-2-spring-security-oauth2</module>--> <!--  需要 spring-boot-starter-parent2.6.13      -->
-        <module>demo-3-spring-authorization-server</module> <!--  需要 spring-boot-starter-parent2.6.13     -->
-        <!--        <module>demo-springboot-filter</module>--> <!--  需要 spring-boot-starter-parent2.6.13   -->
+        <!-- 依赖 spring-boot-starter-parent2.6.13-->
+        <module>demo-1-spring-security-feign-jwt</module>
+        <module>demo-2-spring-security-oauth2</module>
+        <module>demo-springboot-filter</module>
+        <!-- 依赖 spring-boot-starter-parent2.6.13     -->
+        <module>demo-3-spring-authorization-server</module>
     </modules>
 
     <dependencyManagement>

@@ -1,0 +1,1041 @@
+{
+	"info": {
+		"_postman_id": "8facd040-f9a0-42cf-bc08-a3a0e34c2db3",
+		"name": "spring-security-quick-start",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "676442"
+	},
+	"item": [
+		{
+			"name": "认证",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 获取响应体中的数据",
+									"const response = pm.response.json();",
+									"// 打印响应状态码和响应体",
+									"console.log(\"响应状态码: \" + pm.response.code);",
+									"console.log(\"响应体: \", response);",
+									"// 检查响应代码是否为200",
+									"if (response.code === 200) {",
+									"    // 提取token值",
+									"    const token = response.token;",
+									"",
+									"    // 将token设置为全局变量",
+									"    pm.globals.set(\"aop-quick-start-login\", token);",
+									"",
+									"    console.log(\"Token已设置为全局变量 'aop-quick-start-authToken': \" + token);",
+									"} else {",
+									"    console.log(\"响应状态码不是200，未设置Token。\");",
+									"}",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"alice\",\n    \"password\": \"password1\"\n}\n\n// {\n//     \"username\": \"bob\",\n//     \"password\": \"password2\"\n// }\n\n\n// {\n//     \"username\": \"charlie\",\n//     \"password\": \"password3\"\n// }\n\n\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{aop-quick-start-login}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{aop-quick-start-login}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\":\"122\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/post",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询测试",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{aop-quick-start-login}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"username\": \"alice\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/findAuthorByUsername",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"findAuthorByUsername"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "指定角色才能访问",
+			"item": [
+				{
+					"name": "user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{aop-quick-start-login}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{aop-quick-start-login}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/admin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "moderator",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{aop-quick-start-login}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/moderator",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"moderator"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "guest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{aop-quick-start-login}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/guest",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"guest"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "鉴权:A模块远程调用B模块",
+			"item": [
+				{
+					"name": "角色：admin",
+					"item": [
+						{
+							"name": "权限：READ_PRIVILEGES",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{aop-quick-start-login}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/feign/greet/wangming",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"feign",
+										"greet",
+										"wangming"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "权限：DELETE_PRIVILEGES",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{aop-quick-start-login}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/feign/sum/2/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"feign",
+										"sum",
+										"2",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "权限：UPDATE_PRIVILEGES",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{aop-quick-start-login}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/feign/multiply/3/6",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"feign",
+										"multiply",
+										"3",
+										"6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "权限：WRITE_PRIVILEGES",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{aop-quick-start-login}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"message\":\"wangming\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/feign/echo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"feign",
+										"echo"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "角色：user",
+					"item": [
+						{
+							"name": "user权限：READ_PRIVILEGES",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"packages": {},
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{aop-quick-start-login}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/feign/user/greet/wangming",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"feign",
+										"user",
+										"greet",
+										"wangming"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "user权限：DELETE_PRIVILEGES",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{aop-quick-start-login}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/feign/user/sum/2/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"feign",
+										"user",
+										"sum",
+										"2",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "user权限：UPDATE_PRIVILEGES",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{aop-quick-start-login}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/feign/user/multiply/3/6",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"feign",
+										"user",
+										"multiply",
+										"3",
+										"6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "user权限：WRITE_PRIVILEGES",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{aop-quick-start-login}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"message\":\"wangming\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/feign/user/echo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"feign",
+										"user",
+										"echo"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Gitee OAuth",
+			"item": [
+				{
+					"name": "1.在浏览器访问获取code",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "2.根据code获取access_token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://gitee.com/oauth/token?grant_type=authorization_code&code=42f7e578a73267c6943fd80d1daf6591344d1a6d8c15f073b62581eab4f76df6&client_id=d292f41e18f29500fbac712c22ee2f88eb77e4da2a5f0cb774d8db11c176c228&redirect_uri=http://localhost:8080&client_secret=a7180acf30329965b50bf8428f73dd68232423dc4b0a6a21bb10a25c82ff03f5",
+							"protocol": "https",
+							"host": [
+								"gitee",
+								"com"
+							],
+							"path": [
+								"oauth",
+								"token"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "authorization_code"
+								},
+								{
+									"key": "code",
+									"value": "42f7e578a73267c6943fd80d1daf6591344d1a6d8c15f073b62581eab4f76df6"
+								},
+								{
+									"key": "client_id",
+									"value": "d292f41e18f29500fbac712c22ee2f88eb77e4da2a5f0cb774d8db11c176c228"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://localhost:8080"
+								},
+								{
+									"key": "client_secret",
+									"value": "a7180acf30329965b50bf8428f73dd68232423dc4b0a6a21bb10a25c82ff03f5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.根据access_token获取授权用户的资料",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://gitee.com/api/v5/user?access_token=8dfe4474184b50d25afbe4ef6ba9900f",
+							"protocol": "https",
+							"host": [
+								"gitee",
+								"com"
+							],
+							"path": [
+								"api",
+								"v5",
+								"user"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "8dfe4474184b50d25afbe4ef6ba9900f"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "demo3",
+			"item": [
+				{
+					"name": "1.在浏览器访问获取code",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"description": "启动项目，打开浏览器输入授权码模式地址\n\n```\nhttp://localhost:8080/oauth2/authorize?response_type=code&client_id=messaging-client&scope=message.read&redirect_uri=https://www.baidu.com\n\n ```\n\n输入用户名：user1 密码：password"
+					},
+					"response": []
+				},
+				{
+					"name": "2.填写用户名密码 根据code获取access_token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 获取响应数据",
+									"var response = pm.response.json();",
+									"",
+									"// 将 access_token 存储到全局变量",
+									"pm.globals.set(\"spring-security-quick-start-access-token\", response.access_token);",
+									"",
+									"// 将 refresh_token 存储到全局变量",
+									"pm.globals.set(\"spring-security-quick-start-refresh-token\", response.refresh_token);",
+									"",
+									"// 打印全局变量的值以供调试",
+									"console.log(\"Access Token: \" + pm.globals.get(\"spring-security-quick-start-access-token\"));",
+									"console.log(\"Refresh Token: \" + pm.globals.get(\"spring-security-quick-start-refresh-token\"));",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "secret",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "messaging-client",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"description": "固定值",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "eXMgDHYQEmavmReyyhdKwxCgVZ5jKkiPy57vL9nycUOIcHAVaUE-LWf5YCSj4xDsGJf7aaelVFaScpZDZ0_uaPq_NMXkLRZxs_5pG2Aoom-GuT7NihfbT_sniiQz49mN",
+									"description": "输入第一步地址栏的code",
+									"type": "text"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://www.baidu.com",
+									"description": "输输入第一步地址栏的重定向地址",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/oauth2/token",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"oauth2",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.刷新 Token",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "secret",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "messaging-client",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "refresh_token",
+									"type": "text"
+								},
+								{
+									"key": "refresh_token",
+									"value": "{{spring-security-quick-start-refresh-token}}",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "messaging-client",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "client_secret",
+									"value": "secret",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/oauth2/token",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"oauth2",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.客户端模式",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "secret",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "messaging-client",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/oauth2/token",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"oauth2",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{aop-quick-start-login}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNzIwNTIwOTc2LCJpYXQiOjE3MjA1MTczNzZ9.ln4zX7i6noPwp0iB0L8bHGopKyWyoC7--ur8aA_6D9w",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
