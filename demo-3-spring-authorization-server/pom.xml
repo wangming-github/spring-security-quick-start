@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.maizi</groupId>
+        <artifactId>spring-security-quick-start</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <!--    <parent>-->
+    <!--        <groupId>org.springframework.boot</groupId>-->
+    <!--        <artifactId>spring-boot-starter-parent</artifactId>-->
+    <!--        <version>3.1.3</version>-->
+    <!--        <relativePath/>-->
+    <!--    </parent>-->
+
+    <artifactId>demo-3-spring-authorization-server</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>demo-3-spring-authorization-server</name>
+    <description>demo-3-spring-authorization-server</description>
+
+
+    <properties>
+        <!-- 指定 Java 编译版本为 17 -->
+        <java.version>17</java.version>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-authorization-server</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <!--            &lt;!&ndash; Spring Boot Maven 插件 &ndash;&gt;-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.springframework.boot</groupId>-->
+            <!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+            <!--                &lt;!&ndash; 这个插件用于打包 Spring Boot 应用，创建可执行的 JAR 文件，并处理 Spring Boot 特定的构建要求 &ndash;&gt;-->
+            <!--            </plugin>-->
+
+            <!-- Maven 编译插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <!-- 该插件用于编译 Java 源代码 -->
+                <configuration>
+                    <source>17</source>
+                    <!-- 指定编译源代码的版本为 Java 17 -->
+                    <target>17</target>
+                    <!-- 指定编译后的字节码的版本为 Java 17 -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

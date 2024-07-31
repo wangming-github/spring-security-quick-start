@@ -2,6 +2,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.3</version>
+    </parent>
+
     <groupId>com.maizi</groupId> <!-- 项目的 groupId，通常表示组织或公司名称，类似于 Java 包名 -->
     <artifactId>spring-security-quick-start</artifactId> <!-- 项目的 artifactId，表示项目的名称 -->
     <version>1.0-SNAPSHOT</version> <!-- 项目的版本号，1.0-SNAPSHOT 表示这是一个开发中的版本 -->
@@ -9,10 +16,12 @@
 
     <name>spring-security-quick-start</name>
 
+
     <modules>
-        <module>demo-1-spring-security-feign-jwt</module>
-        <module>demo-2-spring-security-oauth2</module>
-        <module>demo-springboot-filter</module>
+        <!--        <module>demo-1-spring-security-feign-jwt</module>--> <!--  需要 spring-boot-starter-parent2.6.13      -->
+        <!--        <module>demo-2-spring-security-oauth2</module>--> <!--  需要 spring-boot-starter-parent2.6.13      -->
+        <module>demo-3-spring-authorization-server</module> <!--  需要 spring-boot-starter-parent2.6.13     -->
+        <!--        <module>demo-springboot-filter</module>--> <!--  需要 spring-boot-starter-parent2.6.13   -->
     </modules>
 
     <dependencyManagement>
