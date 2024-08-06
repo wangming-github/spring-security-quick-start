@@ -1,4 +1,4 @@
-package com.maizi.demo3;
+package com.maizi.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

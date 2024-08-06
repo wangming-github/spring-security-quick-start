@@ -14,7 +14,7 @@ spring:
     cloud: # 配置 Nacos 相关设置
       nacos:
         discovery:
-          server-addr: 127.0.0.1:8848 # Nacos 服务器地址
+          server-addr: 172.18.52.33:8848 # Nacos 服务器地址
 
   redis:
     host: localhost # Redis 主机地址
@@ -33,5 +33,7 @@ mybatis-plus:
 logging:
   level:
     com.maizi.author.feign: DEBUG # 设置 OpenFeign 的日志级别为 DEBUG，打印详细请求信息
+  charset:
+    console: utf-8
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5.5level %-40.40logger [%-4line] → %msg%n" # 日志输出格式

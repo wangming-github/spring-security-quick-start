@@ -1,4 +1,4 @@
-package com.maizi.demo.test;
+package com.maizi.demo.test1;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

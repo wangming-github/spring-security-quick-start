@@ -23,6 +23,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 控制器类，处理OAuth2登录相关的请求。
@@ -58,6 +60,20 @@ public class OAuth2LoginController {
 
         // 返回视图名称 "index"
         return "index";
+    }
+
+    /**
+     * 处理加法请求，并返回结果。
+     *
+     * @param a 加数一
+     * @param b 加数二
+     * @return 返回加法结果的字符串
+     */
+    @GetMapping("/add")
+    @ResponseBody
+    public String add(@RequestParam("a") int a, @RequestParam("b") int b) {
+        int sum = a + b; // 计算加法
+        return "Sum is " + sum; // 返回结果
     }
 
 }

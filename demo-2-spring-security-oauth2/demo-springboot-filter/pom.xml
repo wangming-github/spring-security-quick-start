@@ -2,19 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <name>额外：过滤器的创建</name>
 
     <parent>
         <groupId>com.maizi</groupId>
-        <artifactId>spring-security-quick-start</artifactId>
+        <artifactId>demo-2-spring-security-oauth2</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <name>└────模块一：过滤器/过滤器链的创建及执行顺序</name>
     <artifactId>demo-springboot-filter</artifactId>
 
-    <properties>
-        <spring-boot.version>2.6.13</spring-boot.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -24,7 +21,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot.version}</version>
         </dependency>
 
         <dependency>
@@ -32,16 +28,27 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!--[1/2] junit5用于单元测试 -->
+        <!--包含 junit-jupiter-api 、junit-jupiter-params 、junit-jupiter-engine-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.9.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+
+
+    <build>
+        <plugins>
+            <!--[2/2] 引入 maven-surefire-plugin
+            插件以支持 Maven 执行应用程序的单元测试并生成txt或xml格式的报告。-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>

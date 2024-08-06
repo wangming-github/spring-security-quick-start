@@ -19,7 +19,7 @@ public class R extends HashMap<String, Object> {
      * 默认构造函数，初始化响应对象，设置默认的状态码和消息。
      */
     public R() {
-        put("code", 0);
+        put("code", HttpServletResponse.SC_OK);
         put("msg", "success");
     }
 
@@ -64,7 +64,7 @@ public class R extends HashMap<String, Object> {
      */
     public static R ok(String msg) {
         R r = new R();
-        r.put("code", 0);
+        r.put("code", HttpServletResponse.SC_OK);
         r.put("msg", msg);
         return r;
     }

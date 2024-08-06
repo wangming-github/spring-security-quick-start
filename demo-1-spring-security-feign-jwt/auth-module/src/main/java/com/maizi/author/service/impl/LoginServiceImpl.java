@@ -78,12 +78,12 @@ public class LoginServiceImpl implements LoginService {
             Map<String, Object> tokenMap = new HashMap<>();
             tokenMap.put("code", HttpServletResponse.SC_OK);
             tokenMap.put("token", token);
-            tokenMap.put("msg", "认证成功!");
+            tokenMap.put("msg", "Authentication success!");
             log.info("【鉴权模块】- ↘根据用户名生成 Token，返回前端。");
             return R.ok(tokenMap);
         } else {
             log.info("【鉴权模块】- 登录失败");
-            return R.error(HttpServletResponse.SC_FORBIDDEN, "认证失败!");
+            return R.error(HttpServletResponse.SC_FORBIDDEN, "Authentication failed!");
         }
     }
 
@@ -97,7 +97,10 @@ public class LoginServiceImpl implements LoginService {
         String username = userDetails.getUsername();
         log.info("【鉴权模块】- 登出用户：" + username);
         redisUtil.delete(username);
-        return R.ok("注销成功!");
+        Map<String, Object> result = new HashMap<>();
+        result.put("code", HttpServletResponse.SC_OK);
+        result.put("msg", "logout success!");
+        return R.ok(result);
     }
 
     /**

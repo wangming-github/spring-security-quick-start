@@ -5,6 +5,22 @@
 * service-module 服务模块
 * demo-springboot-filter 过滤器回顾 示例
 
+```prototext
+
+spring-boot-starter-parent:2.6.13
+└── spring-security-quick-start
+    ├── demo-springboot-filter               2.6.13
+    ├── demo-1-spring-security-feign-jwt     2.6.13
+    │   ├── auth-module                      2.6.13
+    │   ├── common-module                    2.6.13
+    │   └── service-module                   2.6.13
+    ├── demo-2-spring-security-oauth2        2.6.13
+    └── demo-3-spring-authorization-server         3.1.3
+```
+
+这样就更加清晰地展示了 `test` 作为父级项目以及其子模块的层级关系。
+
+```
   
 
 了解更多 https://springdoc.cn/spring-security/servlet/index.html

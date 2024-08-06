@@ -10,7 +10,7 @@ spring:
     cloud: #nacos
       nacos:
         discovery:
-          server-addr: 127.0.0.1:8848
+          server-addr: 172.18.52.33:8848
   application:
     name: service-module
   cloud:
@@ -18,5 +18,7 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
 logging:
+  charset:
+    console: utf-8
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5.5level %-40.40logger [%-4line] → %msg%n"

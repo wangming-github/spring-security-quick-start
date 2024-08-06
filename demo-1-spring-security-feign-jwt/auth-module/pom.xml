@@ -9,10 +9,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <name>└────登录模块:实现用户登录并且返回token</name>
     <artifactId>auth-module</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>com.maizi</groupId>
             <artifactId>common-module</artifactId>
@@ -25,7 +25,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
-
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -65,15 +64,41 @@
             <scope>runtime</scope>
         </dependency>
 
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
+
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
         </dependency>
+
+        <!--[1/2] junit5用于单元测试 -->
+        <!--包含 junit-jupiter-api 、junit-jupiter-params 、junit-jupiter-engine-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.9.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
+
+    <build>
+        <plugins>
+            <!--[2/2] 引入 maven-surefire-plugin
+            插件以支持 Maven 执行应用程序的单元测试并生成txt或xml格式的报告。-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>

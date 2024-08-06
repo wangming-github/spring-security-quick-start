@@ -9,9 +9,8 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-
+    <name>└────业务模块:模拟远程调用的服务提供者</name>
     <artifactId>service-module</artifactId>
-
 
     <dependencies>
 
@@ -38,6 +37,7 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <version>${spring-cloud-alibaba.version}</version>
         </dependency>
 
         <!--配置中心来做配置管理-->
@@ -53,6 +53,7 @@
             <version>2.6.13</version> <!-- 指定版本号 -->
         </dependency>
 
+
         <!-- JSON 相关依赖 -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -66,8 +67,7 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
-
-        <!--        redis-->
+        <!-- redis-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -76,5 +76,32 @@
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
+        <!--[1/2] junit5用于单元测试 -->
+        <!--包含 junit-jupiter-api 、junit-jupiter-params 、junit-jupiter-engine-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.9.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <!--[2/2] 引入 maven-surefire-plugin
+            插件以支持 Maven 执行应用程序的单元测试并生成txt或xml格式的报告。-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>
