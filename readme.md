@@ -1,151 +1,386 @@
-项目目录结构：
+# 项目说明文档
 
-* authorization-module 权限模块 [语雀文档](https://www.yuque.com/nines-_-/iuag2x/ugg2h5lxatdv2gh5)
-* common-module 公共模块
-* service-module 服务模块
-* demo-springboot-filter 过滤器回顾 示例
+## 1. Nacos 和 Redis 安装指南介绍
 
-```prototext
+本项目依赖 Nacos 和 Redis 来管理服务发现与配置，以及实现高效的缓存机制。请按照以下步骤安装和配置 Nacos 和 Redis。
 
-spring-boot-starter-parent:2.6.13
-└── spring-security-quick-start
-    ├── demo-springboot-filter               2.6.13
-    ├── demo-1-spring-security-feign-jwt     2.6.13
-    │   ├── auth-module                      2.6.13
-    │   ├── common-module                    2.6.13
-    │   └── service-module                   2.6.13
-    ├── demo-2-spring-security-oauth2        2.6.13
-    └── demo-3-spring-authorization-server         3.1.3
+## 2. 安装 Nacos
+
+Nacos 是一个开源的动态服务发现、配置管理和服务管理平台。下面是安装 Nacos 的步骤：
+
+### 2.1 下载 Nacos
+
+1. 访问 [Nacos GitHub Releases 页面](https://github.com/alibaba/nacos/releases)。
+2. 下载最新版本的 Nacos，通常是 `.zip` 或 `.tar.gz` 文件。
+
+### 2.2 解压并启动 Nacos
+
+1. 解压下载的文件：
+
+   ```sh
+   unzip nacos-server-1.x.x.zip
+   ```
+
+   或者
+
+   ```sh
+   tar -zxvf nacos-server-1.x.x.tar.gz
+   ```
+
+2. 进入 Nacos 的目录：
+
+   ```sh
+   cd nacos/bin
+   ```
+
+3. 启动 Nacos（以开发模式启动）：
+
+   ```sh
+   sh startup.sh -m standalone
+   ```
+
+   这将启动 Nacos 的单机模式，适用于开发和测试。
+
+### 2.3 访问 Nacos
+
+- 打开浏览器并访问 [http://localhost:8848/nacos](http://localhost:8848/nacos)。
+- 默认用户名和密码是 `nacos/nacos`。
+
+### 2.4 配置 Nacos
+
+- 如果需要在生产环境中使用 Nacos，请参考 [Nacos 官方文档](https://nacos.io/zh-cn/docs/quick-start.html) 进行集群配置。
+
+## 3. 安装 Redis
+
+Redis 是一个开源的内存数据结构存储系统，支持多种数据结构。以下是 Redis 的安装步骤：
+
+### 3.1 下载 Redis
+
+1. 访问 [Redis 官方网站](https://redis.io/download)。
+2. 下载最新版本的 Redis。
+
+### 3.2 编译和安装 Redis
+
+对于 **Linux** 系统：
+
+1. 解压下载的文件：
+
+   ```sh
+   tar xzf redis-6.x.x.tar.gz
+   ```
+
+2. 进入 Redis 的目录：
+
+   ```sh
+   cd redis-6.x.x
+   ```
+
+3. 编译 Redis：
+
+   ```sh
+   make
+   ```
+
+4. 安装 Redis：
+
+   ```sh
+   sudo make install
+   ```
+
+### 3.3 启动 Redis
+
+1. 启动 Redis 服务器：
+
+   ```sh
+   redis-server
+   ```
+
+2. 启动 Redis 客户端（另开一个终端）：
+
+   ```sh
+   redis-cli
+   ```
+
+   在客户端中可以执行 Redis 命令，比如：
+
+   ```sh
+   SET key value
+   GET key
+   ```
+
+### 3.4 配置 Redis
+
+- Redis 默认配置文件在 `redis.conf`，可以根据需要进行修改。
+- 启动 Redis 时可以指定配置文件：
+
+   ```sh
+   redis-server /path/to/redis.conf
+   ```
+
+## 4. 配置项目中的 `application.yml`
+
+在 `demo-1-spring-security-feign-jwt` 子模块下的 `auth-module` 和 `service-module` 模块中，需修改 `application.yml` 文件，以配置 Nacos 服务器地址。
+
+**1. 修改 `auth-module` 模块和 `service-module` 模块中的 `application.yml` 文件**
+
+找到 `auth-module` 模块下的 `src/main/resources/application.yml` 文件，添加或修改以下配置：
+
+```yaml
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 172.18.52.33:8848 # Nacos 服务器地址
 ```
 
-这样就更加清晰地展示了 `test` 作为父级项目以及其子模块的层级关系。
+确保两个模块中的 Nacos 服务器地址配置一致，以保证服务注册和发现功能正常。
 
+## 5. 配置 MySQL
+
+### 5.1 执行 SQL 脚本
+
+在 MySQL 数据库中执行以下 SQL 脚本以创建 RBAC 权限表信息：
+
+1. 打开 MySQL 命令行客户端或数据库管理工具（如 MySQL Workbench）。
+
+2. 执行 `DB/demo-1-spring-security-feign-jwt.sql` 文件中的 SQL 语句：
+
+   ```sql
+   -- 如果数据库已存在，则删除数据库 aopquickstart
+   DROP DATABASE IF EXISTS aopquickstart;
+
+   -- 创建数据库 aopquickstart
+   CREATE DATABASE IF NOT EXISTS aopquickstart;
+
+   -- 使用 aopquickstart 数据库
+   USE aopquickstart;
+
+   -- 创建用户表
+   CREATE TABLE `users`
+   (
+       `id`       INT AUTO_INCREMENT PRIMARY KEY, -- 用户ID，自动递增
+       `username` VARCHAR(50)  NOT NULL,          -- 用户名，不允许为空
+       `password` VARCHAR(100) NOT NULL           -- 密码，不允许为空
+   );
+
+   -- 创建角色表
+   CREATE TABLE `roles`
+   (
+       `id`   INT AUTO_INCREMENT PRIMARY KEY, -- 角色ID，自动递增
+       `name` VARCHAR(50) NOT NULL            -- 角色名称，不允许为空
+   );
+
+   -- 创建权限表
+   CREATE TABLE `permissions`
+   (
+       `id`          INT AUTO_INCREMENT PRIMARY KEY, -- 权限ID，自动递增
+       `name`        VARCHAR(50) NOT NULL,           -- 权限名称，不允许为空
+       `description` VARCHAR(255)                    -- 权限描述
+   );
+
+   -- 创建用户角色关联表
+   CREATE TABLE `user_roles`
+   (
+       `user_id` INT NOT NULL,                                              -- 用户ID
+       `role_id` INT NOT NULL,                                              -- 角色ID
+       PRIMARY KEY (`user_id`, `role_id`),                                  -- 复合主键
+       FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE, -- 外键约束，删除用户时也删除关联
+       FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE  -- 外键约束，删除角色时也删除关联
+   );
+
+   -- 创建角色权限关联表
+   CREATE TABLE `role_permissions`
+   (
+       `role_id`       INT NOT NULL,                                                   -- 角色ID
+       `permission_id` INT NOT NULL,                                                   -- 权限ID
+       PRIMARY KEY (`role_id`, `permission_id`),                                       -- 复合主键
+       FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE,            -- 外键约束，删除角色时也删除关联
+       FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE -- 外键约束，删除权限时也删除关联
+   );
+
+   -- 插入用户数据
+   INSERT INTO `users` (`username`, `password`)
+   VALUES ('alice', 'password1'),   -- 用户 alice
+          ('bob', 'password2'),     -- 用户 bob
+          ('charlie', 'password3'), -- 用户 charlie
+          ('david', 'password4'),   -- 用户 david
+          ('eve', 'password5');     -- 用户 eve
+
+   -- 插入角色数据
+   INSERT INTO `roles` (`name`)
+   VALUES ('ADMIN'),     -- 角色 ADMIN
+          ('USER'),      -- 角色 USER
+          ('MODERATOR'), -- 角色 MODERATOR
+          ('GUEST');     -- 角色 GUEST
+
+   -- 插入权限数据
+   INSERT INTO `permissions` (`name`, `description`)
+   VALUES ('READ_PRIVILEGES', '可以读取数据'),   -- 权限 READ_PRIVILEGES
+          ('WRITE_PRIVILEGES', '可以写入数据'),  -- 权限 WRITE_PRIVILEGES
+          ('DELETE_PRIVILEGES', '可以删除数据'), -- 权限 DELETE_PRIVILEGES
+          ('UPDATE_PRIVILEGES', '可以更新数据'); -- 权限 UPDATE_PRIVILEGES
+
+   -- 插入用户角色关联数据
+   INSERT INTO `user_roles` (`user_id`, `role_id`)
+   VALUES (1, 1), -- 用户ID 1 (alice) 关联角色ID 1 (ADMIN)
+          (2, 2), -- 用户ID 2 (bob) 关联角色ID 2 (USER)
+          (3, 3), -- 用户ID 3 (charlie) 关联角色ID 3 (MODERATOR)
+          (4, 4), -- 用户ID 4 (david) 关联角色ID 4 (GUEST)
+          (5, 2); -- 用户ID 5 (eve) 关联角色ID 2 (USER)
+
+   -- 插入角色权限关联数据
+   INSERT INTO `role_permissions` (`role_id`, `permission_id`)
+   VALUES (1, 1), -- 角色ID 1 (ADMIN) 拥有权限ID 1 (READ_PRIVILEGES)
+          (1, 2), -- 角色ID 1 (ADMIN) 拥有权限ID 2 (WRITE_PRIVILEGES)
+          (1, 3), -- 角色ID 1 (ADMIN) 拥有权限ID 3 (DELETE_PRIVILEGES)
+          (1, 4), -- 角色ID 1 (ADMIN) 拥有权限ID 4 (UPDATE_PRIVILEGES)
+          (2, 1), -- 角色ID 2 (USER) 拥有权限ID 1 (READ_PRIVILEGES)
+          (3, 1), -- 角色ID 3 (MODERATOR) 拥有权限ID 1 (READ_PRIVILEGES)
+          (3, 4), -- 角色ID 3 (MODERATOR) 拥有权限ID 4 (UPDATE_PRIVILEGES)
+          (4, 1); -- 角色ID 4 (GUEST) 拥有权限ID 1 (READ_PRIVILEGES)
+   ```
+
+### 5.2 修改 `auth-module` 模块 和 `service-module` 模块中的 `application.yml`
+
+   ```yaml
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/your_database_name?useSSL=false&serverTimezone=UTC
+    # 数据库连接 URL，`your_database_name` 替换为实际的数据库名
+    username: your_database_username
+    # 数据库用户名
+    password: your_database_password
+    # 数据库密码
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # MySQL 数据库驱动类名
+  mybatis-plus:
+    mapper-locations: classpath:/mapper/**/*.xml
+    # MyBatis-Plus 的 Mapper XML 文件位置，请根据实际路径修改
+    global-config:
+      db-config:
+        id-type: auto
+        # ID 策略，`auto` 表示自增
+        field-strategy: not_empty
+        # 字段策略，`not_empty` 表示只对非空字段进行更新
+        logic-delete-value: 1
+        # 逻辑删除的值，`1` 表示已删除
+        logic-not-delete-value: 0
+        # 逻辑未删除的值，`0` 表示未删除
+    configuration:
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+      # 日志实现类，`org.apache.ibatis.logging.stdout.StdOutImpl` 表示标准输出日志
+  jpa:
+    hibernate:
+      ddl-auto: update
+      # Hibernate 的 DDL 自动更新策略，`update` 表示自动更新数据库结构
+    show-sql: true
+    # 显示 SQL 语句
+   ```
+
+## 6. 配置项目中的 `application.yml`
+
+在 `demo-1-spring-security-feign-jwt` 子模块下的 `auth-module` 和 `service-module` 模块中，需修改 `application.yml` 文件，以配置 Nacos 服务器地址。
+
+**1. 修改 `auth-module` 模块和 `service-module` 模块中的 `application.yml` 文件**
+
+找到 `auth-module` 模块下的 `src/main/resources/application.yml` 文件，添加或修改以下配置：
+
+```yaml
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 172.18.52.33:8848 # Nacos 服务器地址
 ```
-  
 
-了解更多 https://springdoc.cn/spring-security/servlet/index.html
+确保两个模块中的 Nacos 服务器地址配置一致，以保证服务注册和发现功能正常。
 
+## 7. 运行测试
 
+在确保所有服务和配置都已正确安装和配置后，可以运行 Maven 测试来验证项目的功能和稳定性。
 
-**本讨论对 [Servlet Security](https://springdoc.cn/spring-security/servlet/architecture.html#servlet-architecture) 进行了扩展。[架构图](https://springdoc.cn/spring-security/servlet/architecture.html#servlet-architecture) 阐述了 Spring Security 用于 Servlet 认证的主要架构组件。如果你需要具体的流程来解释这些部分是如何结合在一起的，请看 [认证机制](https://springdoc.cn/spring-security/servlet/authentication/index.html#servlet-authentication-mechanisms) 的具体章节。**
+### 7.1 执行测试
 
-- **[SecurityContextHolder](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#servlet-authentication-securitycontextholder) - `SecurityContextHolder` 是 Spring Security 存储 [认证](https://springdoc.cn/spring-security/features/authentication/index.html#authentication) 用户细节的地方。**
-- **[SecurityContext](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#servlet-authentication-securitycontext) - 是从 `SecurityContextHolder` 获得的，包含了当前认证用户的 `Authentication` （认证）。**
-- **[Authentication](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#servlet-authentication-authentication) - 可以是 `AuthenticationManager` 的输入，以提供用户提供的认证凭证或来自 `SecurityContext` 的当前用户。**
-- **[GrantedAuthority](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#servlet-authentication-granted-authority) - 在 `Authentication` （认证）中授予委托人的一种权限（即role、scope等）。**
-- **[AuthenticationManager](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#servlet-authentication-authenticationmanager) - 定义 Spring Security 的 Filter 如何执行 [认证](https://springdoc.cn/spring-security/features/authentication/index.html#authentication) 的API。**
-- **[ProviderManager](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#servlet-authentication-providermanager) - 最常见的 `AuthenticationManager` 的实现。**
-- **[AuthenticationProvider](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#servlet-authentication-authenticationprovider) - 由 `ProviderManager` 用于执行特定类型的认证。**
-- **[用 `AuthenticationEntryPoint` 请求凭证](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#servlet-authentication-authenticationentrypoint) - 用于从客户端请求凭证（即重定向到登录页面，发送 `WWW-Authenticate` 响应，等等）。**
-- **[AbstractAuthenticationProcessingFilter](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#servlet-authentication-abstractprocessingfilter) - 一个用于认证的基本 `Filter`。这也让我们很好地了解了认证的高层流程以及各部分是如何协作的。*
+1. 打开终端并导航到项目的根目录。
+2. 运行以下 Maven 命令来执行所有测试：
 
+   ```sh
+   mvn test
+   ```
 
+   该命令将编译项目并运行所有单元测试和集成测试，以确保项目的各个部分按照预期工作。
 
+### 7.2 检查测试结果
 
+- 测试结果将显示在终端中。
+- 如果所有测试都通过，您将看到类似 `BUILD SUCCESS` 的信息。
+- 如果有测试失败，检查终端中的错误信息，定位问题并进行修复。
 
-## 架构
+确保在执行测试之前，Nacos 和 Redis 服务已经启动并运行，数据库也已经配置正确。
 
-## Filter（过滤器）回顾
+---
 
-Spring Security 对 Servlet 的支持是基于Servlet过滤器的，所以先看一下过滤器的一般作用是很有帮助的。下图显示了单个HTTP请求的处理程序的典型分层。
+## 8. 运行 `demo-3-spring-authorization-server` 模块
 
-![filterchain](file/imgs/filterchain.png)
-
-
-
-## DelegatingFilterProxy
-
-下面是 `DelegatingFilterProxy` 如何融入 [`Filter` 实例和 `FilterChain` 的](https://springdoc.cn/spring-security/servlet/architecture.html#servlet-filters-review)图片。
-
-![delegatingfilterproxy](file/imgs/delegatingfilterproxy.png)
-
-## FilterChainProxy
-
-下图显示了 `FilterChainProxy` 的作用。
-
-![filterchainproxy](file/imgs/filterchainproxy.png)
+该模块依赖于 Spring Boot 3.1.3，并需要 Java 17 支持。请按照以下步骤运行该模块：
 
 
 
-## SecurityFilterChain
+### 8.1 切换 JDK 版本
 
+确保您使用的 JDK 版本为 Java 17。如果当前 JDK 版本不是 Java 17，请切换到 Java 17。可以使用以下命令检查当前 JDK 版本：
 
+```sh
+java -version
+```
 
-![securityfilterchain](file/imgs/securityfilterchain.png)
+### 8.2 配置 `application.yml`
 
-`SecurityFilterChain` 中的 [Security Filter](https://springdoc.cn/spring-security/servlet/architecture.html#servlet-security-filters) 通常是Bean，但它们是用 `FilterChainProxy` 而不是 [DelegatingFilterProxy](https://springdoc.cn/spring-security/servlet/architecture.html#servlet-delegatingfilterproxy) 注册的。与直接向Servlet容器或 [DelegatingFilterProxy](https://springdoc.cn/spring-security/servlet/architecture.html#servlet-delegatingfilterproxy) 注册相比，`FilterChainProxy` 有很多优势。首先，它为 [ Spring](https://springdoc.cn/spring-security/servlet/architecture.html#) Security 的所有 Servlet 支持提供了一个起点。由于这个原因，如果你试图对 Spring Security 的 Servlet 支持进行故障诊断，在 `FilterChainProxy` 中添加一个调试点是一个很好的开始。
+1. 在 `demo-3-spring-authorization-server` 模块中，确保 `src/main/resources/application.yml` 文件包含必要的配置。该模块通常只需添加依赖和配置文件即可运行。
 
-其次，由于 `FilterChainProxy` 是 Spring Security 使用的核心，它可以执行一些不被视为可有可无的任务。 例如，它清除了 `SecurityContext` 以避免内存泄漏。它还应用Spring Security的 [`HttpFirewall`](https://springdoc.cn/spring-security/servlet/exploits/firewall.html#servlet-httpfirewall) 来保护应用程序免受某些类型的攻击。
+### 8.3 了解 OAuth2 的基本概念和认证流程
 
-此外，它在确定何时应该调用 `SecurityFilterChain` 方面提供了更大的灵活性。在Servlet容器中，`Filter` 实例仅基于URL被调用。 然而，`FilterChainProxy` 可以通过使用 `RequestMatcher` 接口，根据 `HttpServletRequest` 中的任何内容确定调用。
+在运行 `demo-3-spring-authorization-server` 模块之前，请了解 OAuth2 的基本概念和认证流程，以便更好地理解和配置授权服务器。OAuth2 是一种授权框架，主要用于第三方应用程序安全访问用户的资源。常见的认证流程包括授权码模式、隐式模式、密码模式和客户端凭证模式。
 
-下图显示了多个 `SecurityFilterChain` 实例。
+#### 8.4 调整依赖
 
-![multi securityfilterchain](file/imgs/multi-securityfilterchain.png)
+#### 8.4.1 让该模块依赖于 Spring Boot 3.1.3
 
-在 [Multiple SecurityFilterChain](https://springdoc.cn/spring-security/servlet/architecture.html#servlet-multi-securityfilterchain-figure) 图中， `FilterChainProxy` 决定应该使用哪个 `SecurityFilterChain`。只有第一个匹配的 `SecurityFilterChain` 被调用。如果请求的URL是 `/api/messages/`，它首先与 `/api/**` 的 `SecurityFilterChain0` 模式匹配，所以只有 `SecurityFilterChain0` 被调用，尽管它也与 `SecurityFilterChainn` 匹配。如果请求的URL是 `/messages/`，它与 `/api/**` 的 `SecurityFilterChain0` 模式不匹配，所以 `FilterChainProxy` 继续尝试每个 `SecurityFilterChain`。假设没有其他 `SecurityFilterChain` 实例相匹配，则调用 `SecurityFilterChainn`。
+ 打开文件 [顶级父项目的pom文件](pom.xml)注释 <u>模块三运行步骤</u>，让该模块依赖于 Spring Boot 3.1.3
 
-请注意，`SecurityFilterChain0` 只配置了三个 security `Filter` 实例。然而，`SecurityFilterChainn` 却配置了四个 security `Filter` 实例。值得注意的是，每个 `SecurityFilterChain` 都可以是唯一的，并且可以单独配置。事实上，如果应用程序希望 [ Spring](https://springdoc.cn/spring-security/servlet/architecture.html#) Security 忽略某些请求，那么一个 `SecurityFilterChain` 可能会有零个 security `Filter` 实例。
+```xml
+<!-- 1/3  模块三运行步骤：打开此处parent -->
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.1.3</version>
+</parent>
 
-## Security Filter
+<!-- 2/3  模块三运行步骤：注释此处parent -->
+<!--    <parent>-->
+<!--        <groupId>org.springframework.boot</groupId>-->
+<!--        <artifactId>spring-boot-starter-parent</artifactId>-->
+<!--        <version>2.6.13</version>-->
+<!--    </parent>-->
+```
 
-## 处理 Security 异常
+### 8.4.1 让该模块被父项目管理
 
-下面的图片显示了 `ExceptionTranslationFilter` 与其他组件的关系。
+打开[demo-3-spring-authorization-server/pom.xml](demo-3-spring-authorization-server/pom.xml)注释
 
-![exceptiontranslationfilter](https://springdoc.cn/spring-security/_images/servlet/architecture/exceptiontranslationfilter.png)
+```xml
+<!-- 3/3  模块三运行步骤 -->
+<parent>
+    <groupId>com.maizi</groupId>
+    <artifactId>spring-security-quick-start</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</parent>
+```
 
-- ![number 1](https://springdoc.cn/spring-security/_images/icons/number_1.png) 首先，`ExceptionTranslationFilter` 调用 `FilterChain.doFilter(request, response)` 来调用应用程序的其他部分。
-- ![number 2](https://springdoc.cn/spring-security/_images/icons/number_2.png) 如果用户没有被[ 认证](https://springdoc.cn/spring-security/servlet/architecture.html#)，或者是一个 `AuthenticationException`，那么就 *开始 认证*。
-  - [SecurityContextHolder](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#servlet-authentication-securitycontextholder) 被清理掉。
-  - `HttpServletRequest` 被[保存](https://springdoc.cn/spring-security/servlet/architecture.html#savedrequests)起来，这样一旦认证成功，它就可以用来重放原始请求。
-  - `AuthenticationEntryPoint` 用于请求客户的凭证。例如，它可以重定向到一个登录页面或发送一个 `WWW-Authenticate` 头。
-- ![number 3](https://springdoc.cn/spring-security/_images/icons/number_3.png) 否则，如果是 `AccessDeniedException`，那么就是 *Access Denied*。 `AccessDeniedHandler` 被调用来处理拒绝访问（access denied）。
+#### 8.4.2 调整项目模块的java版本 ，IDEA的Java版本为 17。
 
-## RequestCache
+运行！
 
-`HttpServletRequest` 被保存在 [`RequestCache`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/savedrequest/RequestCache.html)。当用户成功认证后，`RequestCache` 被用来重放原始请求。[`RequestCacheAwareFilter`](https://springdoc.cn/spring-security/servlet/architecture.html#requestcacheawarefilter) 就是使用 `RequestCache` 来保存 `HttpServletRequest` 的。
+## 9.测试
 
-默认情况下，使用一个 `HttpSessionRequestCache`。下面的代码演示了如何定制 `RequestCache` 的实现，如果名为 `continue` 的参数存在，它将用于检查 `HttpSession` 是否有保存的请求。
-
-## 5.Servlet 认证架构
-
-[`AbstractAuthenticationProcessingFilter`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/authentication/AbstractAuthenticationProcessingFilter.html) 被用作验证用户凭证的基础 `Filter`。在认证凭证之前，Spring Security 通常通过使用[`AuthenticationEntryPoint`](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#servlet-authentication-authenticationentrypoint) 来请求凭证。
-
-接下来，`AbstractAuthenticationProcessingFilter` 可以对提交给它的任何认证请求进行认证。
-
-![abstractauthenticationprocessingfilter](file/imgs/abstractauthenticationprocessingfilter.png)
-
-![number 1](https://springdoc.cn/spring-security/_images/icons/number_1.png) 当用户提交他们的凭证时，`AbstractAuthenticationProcessingFilter` 会从 `HttpServletRequest` 中创建一个要认证的[`Authentication`](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#servlet-authentication-authentication)。创建的认证的类型取决于 `AbstractAuthenticationProcessingFilter` 的子类。例如，[`UsernamePasswordAuthenticationFilter`](https://springdoc.cn/spring-security/servlet/authentication/passwords/form.html#servlet-authentication-usernamepasswordauthenticationfilter)从 `HttpServletRequest` 中提交的 *username* 和 *password* 创建一个 `UsernamePasswordAuthenticationToken`。
-
-![number 2](https://springdoc.cn/spring-security/_images/icons/number_2.png) 接下来，[`Authentication`](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#servlet-authentication-authentication) 被传入 [`AuthenticationManager`](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#servlet-authentication-authenticationmanager)，以进行[ 认证](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#)。
-
-![number 3](https://springdoc.cn/spring-security/_images/icons/number_3.png) 如果认证失败，则为 *Failure*。
-
-- [SecurityContextHolder](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#servlet-authentication-securitycontextholder) 被清空。
-- `RememberMeServices.loginFail` 被调用。如果没有配置记住我（remember me），这就是一个无用功。请参阅 [`rememberme`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/authentication/rememberme/package-frame.html) 包。
-- `AuthenticationFailureHandler` 被调用。参见 [`AuthenticationFailureHandler`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/authentication/AuthenticationFailureHandler.html) 接口。
-
-![number 4](https://springdoc.cn/spring-security/_images/icons/number_4.png) 如果认证成功，则为 *Success*。
-
-- `SessionAuthenticationStrategy` 被通知有新的登录。参见 [`SessionAuthenticationStrategy`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/authentication/session/SessionAuthenticationStrategy.html) 接口。
-- [Authentication](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#servlet-authentication-authentication) 是在 [SecurityContextHolder](https://springdoc.cn/spring-security/servlet/authentication/architecture.html#servlet-authentication-securitycontextholder) 上设置的。后来，如果你需要保存 `SecurityContext` 以便在未来的请求中自动设置，必须显式调用 `SecurityContextRepository#saveContext`。参见 [`SecurityContextHolderFilter`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/context/SecurityContextHolderFilter.html) 类。
-- `RememberMeServices.loginSuccess` 被调用。如果没有配置 remember me，这就是一个无用功。请参阅 [`rememberme`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/authentication/rememberme/package-frame.html) 包。
-- `ApplicationEventPublisher` 发布一个 `InteractiveAuthenticationSuccessEvent` 事件。
-- `AuthenticationSuccessHandler` 被调用。参见 [`AuthenticationSuccessHandler`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/authentication/AuthenticationSuccessHandler.html) 接口。
-
-
-
-## 6.授权架构:AuthorizationManager实现
-
-虽然用户可以实现他们自己的 `AuthorizationManager` 来控制授权的所有方面（aspect），但[ Spring](https://springdoc.cn/spring-security/servlet/authorization/architecture.html#) Security提供了一个委托的 `AuthorizationManager`，可以与个别的 `AuthorizationManager` 协作。
-
-`RequestMatcherDelegatingAuthorizationManager` 将把请求与最合适的委托（delegate） `AuthorizationManager` 相匹配。 对于方法安全，你可以使用 `AuthorizationManagerBeforeMethodInterceptor` 和 `AuthorizationManagerAfterMethodInterceptor`。
-
-[Authorization Manager Implementations](https://springdoc.cn/spring-security/servlet/authorization/architecture.html#authz-authorization-manager-implementations) 说明了相关的类。
-
-![authorizationhierarchy](file/imgs/authorizationhierarchy.png)
-
-Figure 1. Authorization Manager Implementations
-
-使用这种方法，`AuthorizationManager` 实现的组合可以在授权决定上被轮询。
+测照[demo-3-spring-authorization-server/readme.md](demo-3-spring-authorization-server/readme.md)

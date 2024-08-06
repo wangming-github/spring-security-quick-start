@@ -3,12 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
     <name>顶级父项目</name><!--不影响构建-->
 
+    <!-- 1/4  模块三运行步骤：打开此处parent -->
     <!--    <parent>-->
     <!--        <groupId>org.springframework.boot</groupId>-->
     <!--        <artifactId>spring-boot-starter-parent</artifactId>-->
     <!--        <version>3.1.3</version>-->
     <!--    </parent>-->
-
+    <!-- 2/4  模块三运行步骤：注释此处parent -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -34,8 +35,9 @@
         <!-- 依赖 spring-boot-starter-parent2.6.13-->
         <module>demo-1-spring-security-feign-jwt</module>
         <module>demo-2-spring-security-oauth2</module>
+        <!-- 3/4  模块三运行步骤：保留demo-3-spring-authorization-server -->
         <!-- 依赖 spring-boot-starter-parent 3.1.3    -->
-        <!-- <module>demo-3-spring-authorization-server</module>-->
+        <!--        <module>demo-3-spring-authorization-server</module>-->
     </modules>
 
     <dependencyManagement>
